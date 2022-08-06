@@ -8,11 +8,7 @@ def get_title_tags(response: HtmlResponse) -> List[str]:
     Args:
         response (HtmlResponse): the scrapy HtmlResponse.
     Returns:
-        a list of anchor tags: [
-            '<a href="/bbs/Soft_Job/M.1659617539.A.ED5.html">[請益] 非本科生轉職請益</a>',
-            '<a href="/bbs/Soft_Job/M.1659683114.A.D04.html">[請益] 請問最近獵人頭公司</a>',
-            ...
-        ]
+        a list of anchor tags
     """
     title_css = ".r-ent .title a"
 
