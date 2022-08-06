@@ -4,7 +4,7 @@ from .request_strategies import (
     YearRangeRequestStrategy,
 )
 from .parsers.page_index import LatestIndexParser
-from .css import get_title_tags, get_post_info
+from .html_tag_helpers import get_title_tags, get_post_info
 
 
 __all__ = [
