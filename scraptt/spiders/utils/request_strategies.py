@@ -1,5 +1,5 @@
 from scrapy import Request
-from ....constants import COOKIES
+from ...constants import COOKIES
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
 from typing import List, Callable, Generator
