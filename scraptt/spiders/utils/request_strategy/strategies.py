@@ -1,8 +1,8 @@
 from scrapy import Request
-from ...constants import COOKIES
-from typing import List, Callable
+from ....constants import COOKIES
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
+from typing import List, Callable, Generator
 
 
 class RequestStrategy(ABC):
@@ -11,7 +11,8 @@ class RequestStrategy(ABC):
     """
 
     @abstractmethod
-    def fetch(self):
+    def fetch(self) -> Generator[Request, None, None]:
+        """The fetch method fetches resources from a given url."""
         pass
 
 
