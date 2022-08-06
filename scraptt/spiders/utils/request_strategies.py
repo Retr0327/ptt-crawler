@@ -32,9 +32,9 @@ class AllRequestStrategy(RequestStrategy):
 
 
 @dataclass
-class EarliestRequestStrategy(RequestStrategy):
+class YearRangeRequestStrategy(RequestStrategy):
     """
-    The EarliestRequestStrategy object fetches the earliest board.
+    The YearRangeRequestStrategy object fetches the earliest board.
     """
 
     boards: List[str]
@@ -59,6 +59,6 @@ class RangeRequestStrategy(RequestStrategy):
 
     def fetch(self):
         board = self.boards[0]
-        for i in range(int(self.index_from), int(self.index_to) + 1):
-            url = f"https://www.ptt.cc/bbs/{board}/index{i}.html"
+        for index_num in range(int(self.index_from), int(self.index_to) + 1):
+            url = f"https://www.ptt.cc/bbs/{board}/index{index_num}.html"
             yield Request(url, cookies=COOKIES, callback=self.callback)
