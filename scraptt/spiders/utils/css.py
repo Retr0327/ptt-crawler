@@ -20,6 +20,6 @@ def get_title_tags(response: HtmlResponse) -> List[str]:
         prev_siblings = response.xpath(
             '//*[@id="main-container"]/div[2]/div[10]/preceding-sibling::*'
         )
-        return prev_siblings.css(title_css).getall()
+        return prev_siblings.css(title_css)
 
-    return response.css(title_css).getall()
+    return response.css(title_css)
