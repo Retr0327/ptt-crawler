@@ -1,5 +1,5 @@
 from .index import IndexParser
-from .latest_index import LatestIndex
-from .year_range import YearRangeIndexParser
+from .latest_index import LatestIndexParser
+from .year_range_index import YearRangeIndexParser
 
-__all__ = ["IndexParser", "LatestIndex", "YearRangeIndexParser"]
+__all__ = ["IndexParser", "LatestIndexParser", "YearRangeIndexParser"]
