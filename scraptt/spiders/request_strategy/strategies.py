@@ -1,9 +1,8 @@
 from scrapy import Request
+from ...constants import COOKIES
 from typing import List, Callable
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
-
-COOKIES = {"over18": "1"}
 
 
 class RequestStrategy(ABC):
