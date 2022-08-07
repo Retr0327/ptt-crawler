@@ -51,9 +51,10 @@ TELNETCONSOLE_ENABLED = False
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-    "scraptt.middlewares.ScrapttDownloaderMiddleware": 543,
+    # "scraptt.middlewares.ScrapttDownloaderMiddleware": 543,
+    "scraptt.middlewares.PyqueryMiddleware": 543,
     "scrapy.downloadermiddlewares.useragent.UserAgentMiddleware": None,
-    "scrapy_fake_useragent.middleware.RandomUserAgentMiddleware": 400,
+    "scrapy_user_agents.middlewares.RandomUserAgentMiddleware": 400,
 }
 
 # Enable or disable extensions

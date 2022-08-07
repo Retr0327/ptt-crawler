@@ -53,7 +53,7 @@ class ScrapttSpiderMiddleware:
             yield r
 
     def spider_opened(self, spider):
-        spider.logger.info('Spider opened: %s' % spider.name)
+        spider.logger.info("Spider opened: %s" % spider.name)
 
 
 class ScrapttDownloaderMiddleware:
@@ -100,4 +100,22 @@ class ScrapttDownloaderMiddleware:
         pass
 
     def spider_opened(self, spider):
-        spider.logger.info('Spider opened: %s' % spider.name)
+        spider.logger.info("Spider opened: %s" % spider.name)
+
+
+# --------------------------------------------------------------------
+# custom middleware
+
+from pyquery import PyQuery
+
+
+class PyqueryMiddleware:
+    """
+    The PyqueryMiddleware object injects PyQuery object into Scrapy `response`.
+    """
+
+    def process_response(self, request, response, spider):
+        response.dom = PyQuery(response.text).make_links_absolute(
+            "https://www.ptt.cc/bbs/"
+        )
+        return response
