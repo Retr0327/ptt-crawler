@@ -51,7 +51,7 @@ class PttSpider(Spider):
         elif self.index_from is not None and self.index_to is not None:
             return RangeRequestStrategy(
                 self.index_from, self.index_to, self.boards
-            ).fetch(self.parse_latest_index)
+            ).fetch(self.parse_index)
 
     def parse_index(self, response: HtmlResponse):
         title_tags = get_title_tags(response)
