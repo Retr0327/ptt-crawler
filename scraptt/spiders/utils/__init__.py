@@ -1,16 +1,16 @@
-from .request_strategies import (
-    AllRequestStrategy,
+from .scrapy_request import (
+    AllRequestsStrategy,
+    YearBackwardRequestStrategy,
     RangeRequestStrategy,
-    YearRangeRequestStrategy,
 )
 from .parsers.page_index import LatestIndexParser
 from .html_tag_helpers import get_title_tags, get_post_info
 
 
 __all__ = [
-    "AllRequestStrategy",
+    "AllRequestsStrategy",
+    "YearBackwardRequestStrategy",
     "RangeRequestStrategy",
-    "YearRangeRequestStrategy",
     "get_title_tags",
     "get_post_info",
     "LatestIndexParser",
