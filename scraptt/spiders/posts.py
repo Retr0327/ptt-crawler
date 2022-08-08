@@ -66,7 +66,7 @@ class PttSpider(Spider):
         return IndexParser(title_tags).parse(self.parse_post)
 
     def parse_latest_index(self, response: HtmlResponse):
-        return LatestIndexParser(response, self.logger).parse(self.parse_index)
+        return LatestIndexParser(self.logger).parse(response, self.parse_index)
 
     def parse_post(self, response: HtmlResponse):
         board, date, post_id, timestamp = get_post_info(response.url)
