@@ -95,5 +95,5 @@ class PttSpider(Spider):
         }
 
 
-        yield PostItem(**post_data)
+        yield PostItem(**post_data).dict()
 
