@@ -3,7 +3,6 @@ from typing import Callable, List
 from dataclasses import dataclass
 from .....constants import COOKIES
 from scrapy import Request, Selector
-from scrapy.http.response.html import HtmlResponse
 
 
 @dataclass
@@ -14,7 +13,7 @@ class IndexParser(Parser):
 
     title_tags: List[Selector]
 
-    def parse(self, response: HtmlResponse, callback: Callable):
-        for tag in self.title_tags:
-            href = tag.css("a::attr(href)").get()
-            yield Request(response.urljoin(href), cookies=COOKIES, callback=callback)
+    def parse(self, callback: Callable):
+        for title_tag in list(self.title_tags.items()):
+            url = title_tag.attr("href")
+            yield Request(url, cookies=COOKIES, callback=callback)
