@@ -63,7 +63,7 @@ class PttSpider(Spider):
                 self.logger,
             ).parse(response, callback=self.parse_post, self_callback=self.parse_index)
 
-        return IndexParser(response, title_tags).parse(self.parse_post)
+        return IndexParser(title_tags).parse(self.parse_post)
 
     def parse_latest_index(self, response: HtmlResponse):
         return LatestIndexParser(response, self.logger).parse(self.parse_index)
@@ -94,6 +94,4 @@ class PttSpider(Spider):
             "comments": comments,
         }
 
-
         yield PostItem(**post_data).dict()
-
