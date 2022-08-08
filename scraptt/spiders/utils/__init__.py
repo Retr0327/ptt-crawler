@@ -3,8 +3,8 @@ from .scrapy_request import (
     YearBackwardRequestStrategy,
     RangeRequestStrategy,
 )
+from .html_tag_helpers import get_title_tags
 from .parsers.page_index import LatestIndexParser
-from .html_tag_helpers import get_title_tags, get_post_info
 
 
 __all__ = [
@@ -12,6 +12,5 @@ __all__ = [
     "YearBackwardRequestStrategy",
     "RangeRequestStrategy",
     "get_title_tags",
-    "get_post_info",
     "LatestIndexParser",
 ]
