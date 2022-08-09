@@ -8,6 +8,7 @@ scrapy = "*"
 pydantic = "*"
 scrapy-fake-useragent = "*"
 pyquery = "*"
+ckip-transformers = "*"
 
 [dev-packages]
 
