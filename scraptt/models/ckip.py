@@ -2,7 +2,7 @@ import pickle
 from ..configs import ckip_path
 
 
-def connect_ckip_drivers():
+def connect_ckip_drivers() -> tuple:
     """The connect_ckip_drivers functino connects to the ckip drivers.
 
     Returns:
