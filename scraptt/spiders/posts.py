@@ -24,8 +24,11 @@ from scrapy.http.response.html import HtmlResponse
 
 make_ckip_drivers()
 
+# from .utils.tei_converter.segmenter import Segmenter
 
-class PttSpider(Spider):
+
+
+class PostsSpider(Spider):
     """
     The PttSpider object defines the behaviour for crawling and parsing pages for the ptt website.
     """
