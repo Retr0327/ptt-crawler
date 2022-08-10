@@ -5,7 +5,7 @@ from typing import Callable, Generator
 
 class RequestStrategy(ABC):
     """
-    The RequestStrategy builds the request urls.
+    The RequestStrategy objects builds the request urls.
     """
 
     @abstractmethod
