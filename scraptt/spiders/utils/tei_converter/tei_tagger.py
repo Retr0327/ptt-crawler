@@ -15,6 +15,8 @@ class Tagger(ABC):
 
         Args:
             ws_pos_pair (tuple): the pair of a word and its corresponding part-of-speech
+        Returns:
+            a str (i.e. a tie tag).
         """
         pass
 
