@@ -1,10 +1,10 @@
 import re
 from .base import Parser
 from datetime import datetime
+from .....configs import COOKIES
 from logging import LoggerAdapter
 from typing import Callable, List
 from dataclasses import dataclass
-from .....constants import COOKIES
 from scrapy import Request, Selector
 from scrapy.http.response.html import HtmlResponse
 

@@ -2,9 +2,9 @@ import re
 from .base import Parser
 from scrapy import Request
 from typing import Callable
+from .....configs import COOKIES
 from logging import LoggerAdapter
 from dataclasses import dataclass
-from .....constants import COOKIES
 from scrapy.http.response.html import HtmlResponse
 
 

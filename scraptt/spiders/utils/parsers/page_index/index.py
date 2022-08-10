@@ -1,7 +1,7 @@
 from .base import Parser
+from .....configs import COOKIES
 from typing import Callable, List
 from dataclasses import dataclass
-from .....constants import COOKIES
 from scrapy import Request, Selector
 
 

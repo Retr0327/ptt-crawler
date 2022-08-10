@@ -1,5 +1,5 @@
 from scrapy import Request
-from ....constants import COOKIES
+from ....configs import COOKIES
 from dataclasses import dataclass
 from typing import List, Callable
 from .base import RequestStrategy
