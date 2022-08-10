@@ -7,7 +7,7 @@ class BoardsSpider(Spider):
     The BoardsSpider object defines the behaviour for crawling all the boards from ptt.
     """
 
-    name = "boards"
+    name = "ptt_boards"
     allowed_domains = ["ptt.cc"]
     start_urls = ["https://www.ptt.cc/cls/1"]
 
