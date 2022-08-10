@@ -1,24 +1,28 @@
 from typing import Union
 from scrapy import Spider
 from ..items import PostItem
-from .utils.scrapy_request import (
-    AllRequestsStrategy,
-    RangeRequestStrategy,
-    YearBackwardRequestStrategy,
-)
-from scrapy.http.response.html import HtmlResponse
-from .utils.html_tag_helpers import get_title_tags
-from .utils.parsers.page_index import (
-    IndexParser,
-    YearBackwardIndexParser,
-    LatestIndexParser,
-)
 from .utils.parsers.posts import (
     get_meta_data,
     get_post_info,
     ContentCleaner,
     CommentsParser,
 )
+from .utils.scrapy_request import (
+    AllRequestsStrategy,
+    RangeRequestStrategy,
+    YearBackwardRequestStrategy,
+)
+from .utils.parsers.page_index import (
+    IndexParser,
+    YearBackwardIndexParser,
+    LatestIndexParser,
+)
+from ..configs import make_ckip_drivers
+from .utils.html_tag_helpers import get_title_tags
+from scrapy.http.response.html import HtmlResponse
+
+
+make_ckip_drivers()
 
 
 class PttSpider(Spider):
