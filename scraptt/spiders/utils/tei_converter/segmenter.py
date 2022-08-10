@@ -23,7 +23,11 @@ class Segmenter:
         Args:
             ws_pos_pair (tuple): the pair of a word and its corresponding part-of-speech
         Returns:
-            a list of tuples.
+            a list of tuples: [
+                ('我', 'Nh'),
+                ('喜歡', 'VK'),
+                ('程式', 'Na')
+            ]
         """
 
         sentence_ws, sentence_pos = ws_pos_pair
@@ -36,7 +40,10 @@ class Segmenter:
         """The transform method transforms the sentences in a list to word segmentation and part-of-speech results.
 
         Returns:
-            a list of lists of tuples.
+            a list of lists of tuples: [
+                [('我', 'Nh'), ('喜歡', 'VK'), ('程式', 'Na')],
+                [('好', 'Dfa'), ('想', 'VE'), ('睡覺', 'VA')]
+            ]
         """
         filtered_list = self.remove_empty_string(self.sentence_list)
         ws_pipeline = self.ws_driver(filtered_list, use_delim=True)
