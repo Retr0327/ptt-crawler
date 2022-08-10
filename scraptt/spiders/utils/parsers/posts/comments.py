@@ -61,7 +61,7 @@ class CommentsParser:
         comment_order = index + 1
         comment_type = value(".push-tag").text()
         author = value(".push-userid").text().split(" ")[0]
-        content = value(".push-content").text().lstrip(" :")
+        content = value(".push-content").text().lstrip(" :").strip()
         self.count_post_vote(comment_type)
 
         comment = CommentsValidator(
