@@ -3,7 +3,7 @@ from ..configs import ckip_path
 
 
 def connect_ckip_drivers() -> tuple:
-    """The connect_ckip_drivers functino connects to the ckip drivers.
+    """The connect_ckip_drivers function connects to the ckip drivers.
 
     Returns:
         a tuple, containing CkipWordSegmenter and CkipPosTagger.
