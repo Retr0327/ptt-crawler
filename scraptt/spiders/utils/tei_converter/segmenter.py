@@ -1,5 +1,5 @@
-from typing import List
 from dataclasses import dataclass
+from typing import List, Union, Dict
 from ....models import connect_ckip_drivers
 
 
@@ -49,3 +49,24 @@ class Segmenter:
         ws_pipeline = self.ws_driver(filtered_list, use_delim=True)
         pos_pipeline = self.pos_driver(ws_pipeline, use_delim=True)
         return list(map(self.pack_ws_pos_sentece, zip(ws_pipeline, pos_pipeline)))
+
+
+def segment_text(data: List[Union[str, Dict[str, str]]]):
+    """The segment_text function segments the text.
+
+    Args:
+        data (list): the post-related data (i.e title, body or comments).
+    Returns:
+        a list of dicts in which the content is a list of list of tuples, a list of list of tuples
+        otherwise.
+    """
+    is_comments = all(isinstance(value, dict) for value in data)
+
+    if is_comments:
+        segment_comment = lambda value: {
+            **value,
+            "content": Segmenter(value["content"]).transform(),
+        }
+        return list(map(segment_comment, data))
+
+    return Segmenter(data).transform()
