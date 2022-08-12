@@ -1,7 +1,7 @@
-from typing import List
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
 from xml.sax.saxutils import escape
+from typing import Dict, List, Union
 
 
 class Tagger(ABC):
@@ -35,21 +35,21 @@ class TitleTagger(Tagger):
     segmented_sentences: List[tuple]
 
     def build_tags(self, ws_pos_pair: tuple) -> str:
-        word, pos = ws_pos_pair
+        word, pos = ws_pos_pair[0]
         return f'<w type="{pos}">{escape(word)}</w>'
 
     def create(self) -> str:
         if self.segmented_sentences[0][0][0].startswith("http"):
             return ""
 
-        tags = list(map(self.build_tags, self.segmented_sentences[0]))
+        tags = list(map(self.build_tags, self.segmented_sentences))
         return "\n".join(tags)
 
 
 @dataclass
-class ContentTagger(Tagger):
+class BodyTagger(Tagger):
     """
-    The ContentTagger object creates tags for either a post content or a comment content.
+    The BodyTagger object creates tags for either a post content or a comment content.
     """
 
     segmented_sentences: List[tuple]
@@ -67,28 +67,49 @@ class ContentTagger(Tagger):
         return "\n".join(tags)
 
 
-def create_tei_tags(segmented_sentences: List[tuple]) -> str:
-    """The create_tei_tagger function creats tei tags based on the `segmented_sentences`.
+@dataclass
+class CommentTagger(Tagger):
+    comments_data: List[Dict[str, Union[str, List[tuple]]]]
+
+    def build_comment_template(self, author: str, comment_type: str, tags: str) -> str:
+        return f"""<comment author="{author}" c_type="{comment_type}">\n<s>\n{tags}\n</s>\n</comment>\n"""
+
+    def build_tags(self, ws_pos_pair: tuple) -> str:
+        word, pos = ws_pos_pair
+        if not word.startswith("http"):
+            return f'<w type="{pos}">{escape(word)}</w>'
+
+        return ""
+
+    def build_comment_tags(self, comment: Dict[str, List[tuple]]) -> str:
+        comment_author = comment["author"]
+        comment_type = comment["type"]
+
+        comment_text = list(map(self.build_tags, comment["content"][0]))
+        comment_text_tags = "\n".join(comment_text)
+        return self.build_comment_template(
+            comment_author, comment_type, comment_text_tags
+        )
+
+    def create(self) -> str:
+        if self.comments_data:
+            tags = list(map(self.build_comment_tags, self.comments_data))
+            return "\n".join(tags)
+
+        return ""
+
+
+def create_tei_tags(segmented_sentences: List[List[tuple]], tag_type: str) -> str:
+    """The create_tei_tags function creates tei taggs based on `tag_type`.
 
     Args:
-        segmented_sentences (list): a list of word segmentation and part-of-speech items.
+        segmented_sentences (str): a list of lists of tuples.
+        tag_type (str): the type of tagger.
     Returns:
-        a str: <s>
-            <w type="Nh">我</w>
-            <w type="VK">喜歡</w>
-            <w type="Na">程式</w>
-        </s>
-        <s>
-            <w type="Dfa">好</w>
-            <w type="VE">想</w>
-            <w type="VA">睡覺</w>
-        </s>
-
+        an emtpy string if the `segmented_sentences` is empty, a tei string otherwise.
     """
     if not segmented_sentences:
         return ""
 
-    if len(segmented_sentences) == 1:
-        return TitleTagger(segmented_sentences).create()
-
-    return ContentTagger(segmented_sentences).create()
+    factories = {"title": TitleTagger, "body": BodyTagger, "comments": CommentTagger}
+    return factories[tag_type](segmented_sentences).create()
