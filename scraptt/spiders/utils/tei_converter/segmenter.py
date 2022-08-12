@@ -69,4 +69,7 @@ def segment_text(data: List[Union[str, Dict[str, str]]]):
         }
         return list(map(segment_comment, data))
 
+    if isinstance(data, str):
+        data = [data]
+
     return Segmenter(data).transform()
