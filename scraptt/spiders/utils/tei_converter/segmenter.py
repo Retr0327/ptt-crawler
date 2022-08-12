@@ -65,7 +65,7 @@ def segment_text(data: List[Union[str, Dict[str, str]]]):
     if is_comments:
         segment_comment = lambda value: {
             **value,
-            "content": Segmenter(value["content"]).transform(),
+            "content": Segmenter([value["content"]]).transform(),
         }
         return list(map(segment_comment, data))
 
