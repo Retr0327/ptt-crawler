@@ -1,3 +1,4 @@
+import asyncio
 from .data_handler import (
     DataHandler,
     TitleDataHandler,
@@ -19,27 +20,32 @@ class TeiTagger(ABC):
     data_handler: DataHandler  # the bridge
 
     @abstractmethod
-    def build_tags(self, *args, **kwargs) -> str:
+    # def build_tags(self, *args, **kwargs) -> str:
+    async def build_tags(self, *args, **kwargs) -> str:
         """The build_tags method builds the tei tags."""
         pass
+
+    async def build_multiple_tags(self, data):
+        return await asyncio.gather(*list(map(self.build_tags, data)))
 
     def create(self) -> str:
         data = self.data_handler.handle_data()
         if not data:
             return ""
 
-        tags = list(map(self.build_tags, data))
+        # tags = list(map(self.build_tags, data))
+        tags = asyncio.run(self.build_multiple_tags(data))
         return "\n".join(tags)
 
 
 class TitleTagger(TeiTagger):
-    def build_tags(self, ws_pos_pair: tuple) -> str:
+    async def build_tags(self, ws_pos_pair: tuple) -> str:
         word, pos = ws_pos_pair
         return f'<w type="{pos}">{escape(word)}</w>'
 
 
 class BodyTagger(TeiTagger):
-    def build_tags(self, ws_pos_pair: List[tuple]) -> str:
+    async def build_tags(self, ws_pos_pair: List[tuple]) -> str:
         output = "<s>\n"
         for word, pos in ws_pos_pair:
             if not word.startswith("http"):
@@ -60,7 +66,7 @@ class CommentTagger(TeiTagger):
 
         return ""
 
-    def build_tags(self, comment: Dict[str, List[tuple]]) -> str:
+    async def build_tags(self, comment: Dict[str, List[tuple]]) -> str:
         comment_author = comment["author"]
         comment_type = comment["type"]
 
