@@ -40,11 +40,18 @@ class CKIPTransformer:
         """The transform method transforms the sentences in a list to word segmentation and part-of-speech results.
 
         Returns:
-            a list of lists of tuples: [
+            an empty string if there is no comment, a list of lists of tuples otherwise: [
                 [('我', 'Nh'), ('喜歡', 'VK'), ('程式', 'Na')],
                 [('好', 'Dfa'), ('想', 'VE'), ('睡覺', 'VA')]
             ]
         """
+        invalid_list = not self.sentence_list or all(
+            [value == "" for value in self.sentence_list]
+        )
+
+        if invalid_list:
+            return self.sentence_list
+
         filtered_list = self.remove_empty_string(self.sentence_list)
         ws_pipeline = self.ws_driver(filtered_list, use_delim=True)
         pos_pipeline = self.pos_driver(ws_pipeline, use_delim=True)
