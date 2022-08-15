@@ -20,7 +20,6 @@ class TeiTagger(ABC):
     data_handler: DataHandler  # the bridge
 
     @abstractmethod
-    # def build_tags(self, *args, **kwargs) -> str:
     async def build_tags(self, *args, **kwargs) -> str:
         """The build_tags method builds the tei tags."""
         pass
@@ -28,13 +27,12 @@ class TeiTagger(ABC):
     async def build_multiple_tags(self, data):
         return await asyncio.gather(*list(map(self.build_tags, data)))
 
-    def create(self) -> str:
+    async def create(self) -> str:
         data = self.data_handler.handle_data()
         if not data:
             return ""
 
-        # tags = list(map(self.build_tags, data))
-        tags = asyncio.run(self.build_multiple_tags(data))
+        tags = await self.build_multiple_tags(data)
         return "\n".join(tags)
 
 
@@ -77,7 +75,7 @@ class CommentTagger(TeiTagger):
         )
 
 
-def create_tei_tags(segmented_sentences: List[List[tuple]], tag_type: str) -> str:
+async def create_tei_tags(segmented_sentences: List[List[tuple]], tag_type: str) -> str:
     if not segmented_sentences:
         return ""
 
@@ -87,4 +85,4 @@ def create_tei_tags(segmented_sentences: List[List[tuple]], tag_type: str) -> st
         "comments": CommentTagger(CommentDataHandler(segmented_sentences)),
     }
 
-    return factories[tag_type].create()
+    return await factories[tag_type].create()
