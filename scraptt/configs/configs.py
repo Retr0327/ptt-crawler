@@ -4,7 +4,7 @@ from pathlib import Path
 # --------------------------------------------------------------------
 # ckip path
 
-pkg_path = Path("__file__").resolve().parent
+pkg_path = Path("__file__").resolve().parent / "scraptt"
 ckip_dir = pkg_path / "models"
 ckip_path = ckip_dir / "ckip_drivers.pickle"
 
