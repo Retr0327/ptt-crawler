@@ -68,6 +68,10 @@ class CommentTagger(TeiTagger):
         comment_author = comment["author"]
         comment_type = comment["type"]
 
+        # no comments then empty string
+        if comment["content"][0] == "":
+            return ""
+
         comment_text = list(map(self.build_comment_tags, comment["content"][0]))
         comment_text_tags = "\n".join(comment_text)
         return self.build_comment_template(
