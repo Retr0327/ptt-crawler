@@ -1,3 +1,4 @@
+import asyncio
 from datetime import datetime
 from typing import Dict, Union
 from dataclasses import dataclass
@@ -48,16 +49,21 @@ class TeiConverter:
     </text>
 </TEI.2>"""
 
+    async def create_multiple_tei_tags(self):
+        filtered_body = MandarinExtractor(self.post_data["post_body"]).extract()
+
+        return await asyncio.gather(
+            create_tei_tags(await segment_text(self.post_data["post_title"]), "title"),
+            create_tei_tags(await segment_text(filtered_body), "body"),
+            create_tei_tags(await segment_text(self.post_data["comments"]), "comments"),
+        )
+
     def convert(self):
         post_id = self.post_data["post_id"]
         post_author = self.post_data["post_author"]
         post_board = self.post_data["post_board"]
         year, month, day = create_datetime(self.post_data["post_time"])
-
-        title = create_tei_tags(segment_text(self.post_data["post_title"]), "title")
-        filtered_body = MandarinExtractor(self.post_data["post_body"]).extract()
-        body = create_tei_tags(segment_text(filtered_body), "body")
-        comments = create_tei_tags(segment_text(self.post_data["comments"]), "comments")
+        title, body, comments = asyncio.run(self.create_multiple_tei_tags())
 
         return self.create_tei_template(
             author=post_author,
