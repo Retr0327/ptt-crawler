@@ -1,4 +1,6 @@
+import asyncio
 from typing import Union
+from pathlib import Path
 from scrapy import Spider
 from ..items import PostItem
 from .utils.parsers.posts import (
@@ -18,14 +20,13 @@ from .utils.parsers.page_index import (
     LatestIndexParser,
 )
 from ..configs import make_ckip_drivers
+from .utils.tei_converter import TeiConverter
 from .utils.html_tag_helpers import get_title_tags
 from scrapy.http.response.html import HtmlResponse
+from .utils.file_writer import write_multiple_files
 
-
+# create ckip drivers
 make_ckip_drivers()
-
-# from .utils.tei_converter.segmenter import Segmenter
-
 
 
 class PostsSpider(Spider):
@@ -36,7 +37,8 @@ class PostsSpider(Spider):
     name = "ptt_post"
     allowed_domains = ["ptt.cc"]
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs) -> None:
+        self.data_dir = kwargs.pop("data_dir", None).rstrip("/")
         self.boards = kwargs.pop("boards").split(",")
         self.all = kwargs.pop("all", None)
         self.index_from = kwargs.pop("index_from", None)
@@ -76,7 +78,7 @@ class PostsSpider(Spider):
         return LatestIndexParser(self.logger).parse(response, self.parse_index)
 
     def parse_post(self, response: HtmlResponse):
-        board, date, post_id, timestamp = get_post_info(response.url)
+        board, post_id, date, timestamp = get_post_info(response.url)
 
         main_content = response.dom("#main-content")
         if not main_content:
@@ -101,4 +103,17 @@ class PostsSpider(Spider):
             "comments": comments,
         }
 
+        tei_content = TeiConverter(post_data).convert()
+        string_date = date.strftime("%Y%m%d_%H%M")
+        year = date.year
+        dir_path = f"{self.data_dir}/{board}/{year}"
+
+        # make data dir
+        Path(dir_path).mkdir(parents=True, exist_ok=True)
+
+        file_path = f"{dir_path}/{string_date}_{post_id}"
+
+        asyncio.run(
+            write_multiple_files(file_path, response.body, post_data, tei_content)
+        )
         yield PostItem(**post_data).dict()
