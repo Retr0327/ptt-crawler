@@ -18,7 +18,7 @@ async def segment_multiple_comments(data):
 # public interface
 
 
-def segment_text(data: List[Union[str, Dict[str, str]]]):
+async def segment_text(data: List[Union[str, Dict[str, str]]]):
     """The segment_text function segments the text.
 
     Args:
@@ -30,7 +30,7 @@ def segment_text(data: List[Union[str, Dict[str, str]]]):
     is_comments = all(isinstance(value, dict) for value in data)
 
     if is_comments:
-        return asyncio.run(segment_multiple_comments(data))
+        return await segment_multiple_comments(data)
 
     if isinstance(data, str):
         data = [data]
