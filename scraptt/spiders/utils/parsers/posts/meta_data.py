@@ -1,6 +1,6 @@
 import re
-from typing import Dict, List
 from datetime import datetime
+from typing import Dict, List, Union
 from scrapy.http.response.html import HtmlResponse
 
 
@@ -30,16 +30,16 @@ def get_meta_data(response: HtmlResponse) -> Dict[str, str]:
     return dict(zip(keys, values))
 
 
-def get_post_info(url: str) -> List[str]:
+def get_post_info(url: str) -> List[Union[str, datetime]]:
     """The get_post_info function gets the info of a post from `url`.
 
     Args:
         url (str): the url of a post
     Returns:
-        a list of post info (i.e. board, date, and post id)
+        a list of post info (i.e. board name, post id, date, and timestamp).
     """
     board = re.search(r"www\.ptt\.cc\/bbs\/([\w\d\-_]{1,30})\/", url).group(1)
     timestamp = re.search(r"(\d{10})", url).group(1)
-    date = datetime.fromtimestamp(int(timestamp)).strftime("%Y%m%d_%H%M")
+    date = datetime.fromtimestamp(int(timestamp))
     post_id = url.split("/")[-1].split(".html")[0]
-    return [board, date, post_id, timestamp]
+    return [board, post_id, date, timestamp]
