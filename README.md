@@ -29,12 +29,12 @@ There are three main ways to run the crawler:
   scrapy crawl ptt_post -a boards=Soft_Job -a index_from=1715 -a index_to=1718 
   ```
 
-> if you want to scrap multiple boards, simply run: 
-> ```
-> -a boards=board_1,board_2
-> ``` 
-> For exampel, the following command scrapes all the posts from `Soft_Job` and `Baseball` boards.
-> ```
-> scrapy crawl ptt_post -a boards=Soft_Job,Baseball -a all=True
-> ```
+If you want to scrap multiple boards, simply run: 
+```
+-a boards=board_1,board_2
+``` 
+For exampel, the following command scrapes all the posts from `Soft_Job` and `Baseball` boards.
+```
+scrapy crawl ptt_post -a boards=Soft_Job,Baseball -a all=True
+```
 
