@@ -3,8 +3,12 @@ This project scrapes/crawls post content and comments from [PTT](https://term.pt
 
 ## **Documentation**
 ### 1. Installation
-- Python version: 3.7.5
+- Python version: 3.7.5 (due to CKIP)
 - Clone repository
   ```bash
-  git clone git@github.com:Retr0327/uniform-invoice-tkinter-app.git
+  git clone git@github.com:Retr0327/ptt-crawler.git
+  ```
+- Install Requirement
+  ```bash 
+  cd scraptt && pip install -r requirement.txt      
   ```
