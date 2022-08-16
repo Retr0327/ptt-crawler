@@ -38,7 +38,7 @@ class PostsSpider(Spider):
     allowed_domains = ["ptt.cc"]
 
     def __init__(self, **kwargs) -> None:
-        self.data_dir = kwargs.pop("data_dir", None).rstrip("/")
+        self.data_dir = kwargs.pop("data_dir", None)
         self.boards = kwargs.pop("boards").split(",")
         self.all = kwargs.pop("all", None)
         self.index_from = kwargs.pop("index_from", None)
@@ -103,17 +103,20 @@ class PostsSpider(Spider):
             "comments": comments,
         }
 
-        tei_content = TeiConverter(post_data).convert()
-        string_date = date.strftime("%Y%m%d_%H%M")
-        year = date.year
-        dir_path = f"{self.data_dir}/{board}/{year}"
+        if self.data_dir:
+            data_dir = self.data_dir.rstrip("/")
+            tei_content = TeiConverter(post_data).convert()
+            string_date = date.strftime("%Y%m%d_%H%M")
+            year = date.year
+            dir_path = f"{data_dir}/{board}/{year}"
 
-        # make data dir
-        Path(dir_path).mkdir(parents=True, exist_ok=True)
+            # make data dir
+            Path(dir_path).mkdir(parents=True, exist_ok=True)
 
-        file_path = f"{dir_path}/{string_date}_{post_id}"
+            file_path = f"{dir_path}/{string_date}_{post_id}"
 
-        asyncio.run(
-            write_multiple_files(file_path, response.body, post_data, tei_content)
-        )
+            asyncio.run(
+                write_multiple_files(file_path, response.body, post_data, tei_content)
+            )
+
         yield PostItem(**post_data).dict()
