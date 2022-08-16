@@ -12,7 +12,7 @@ This project scrapes/crawls post content and comments from [PTT](https://term.pt
   ```bash 
   cd scraptt && pip install -r requirement.txt      
   ```
-
+<!-- 
 
 ### 2. Start the crawler
 There are three main ways to run the crawler:
@@ -36,5 +36,5 @@ If you want to scrap multiple boards, simply run:
 For exampel, the following command scrapes all the posts from `Soft_Job` and `Baseball` boards.
 ```
 scrapy crawl ptt_post -a boards=Soft_Job,Baseball -a all=True
-```
+``` -->
 
