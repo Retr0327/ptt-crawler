@@ -1,11 +1,21 @@
 import re
+import asyncio
 from datetime import datetime
 from typing import Dict, List, Union
 from scrapy.http.response.html import HtmlResponse
 
 
-def strip_items(data: List[str]) -> List[str]:
-    return [i.strip() for i in data]
+async def strip_items(data: List[str]) -> List[str]:
+    return list(map(lambda value: value.strip(), data))
+
+
+async def create_meta_data(response: HtmlResponse):
+    meta_tag = '//*[@id="main-content"]/div/span[@class="article-meta-tag"]'
+    key_task = strip_items(response.xpath(f"{meta_tag}/text()").getall())
+    value_task = strip_items(
+        response.xpath(f"{meta_tag}/following-sibling::*/text()").getall()
+    )
+    return await asyncio.gather(key_task, value_task)
 
 
 def get_meta_data(response: HtmlResponse) -> Dict[str, str]:
@@ -21,12 +31,7 @@ def get_meta_data(response: HtmlResponse) -> Dict[str, str]:
             '時間': 'Fri Aug  5 17:03:40 2022'
         }
     """
-
-    meta_tag = '//*[@id="main-content"]/div/span[@class="article-meta-tag"]'
-    keys = strip_items(response.xpath(f"{meta_tag}/text()").getall())
-    values = strip_items(
-        response.xpath(f"{meta_tag}/following-sibling::*/text()").getall()
-    )
+    keys, values = asyncio.run(create_meta_data(response))
     return dict(zip(keys, values))
 
 
