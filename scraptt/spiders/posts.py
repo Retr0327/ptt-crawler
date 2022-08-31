@@ -1,6 +1,6 @@
 from ..items import PostItem
 from .base import BasePostSpider
-from .utils.post_data import get_post_data
+from .utils.parsers.posts import get_post_data
 from scrapy.http.response.html import HtmlResponse
 
 
