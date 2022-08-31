@@ -3,8 +3,11 @@ from datetime import datetime
 from typing import Dict, Union
 from dataclasses import dataclass
 from .tags import create_tei_tags
-from .segmenter import segment_text
-from .mandarin_extractor import MandarinExtractor
+from ..segmenter import segment_text
+from .mandarin_extractor import extract_mandarin
+
+# --------------------------------------------------------------------
+# helper functions
 
 
 def create_datetime(post_time: Union[int, str]) -> datetime:
@@ -15,21 +18,16 @@ def create_datetime(post_time: Union[int, str]) -> datetime:
     return (str(date_time.year), str(date_time.month), str(date_time.day))
 
 
-@dataclass
-class TeiConverter:
-    post_data: Dict[str, Union[str, int]]
-
-    def create_tei_template(
-        self,
-        author: str,
-        id: str,
-        year: str,
-        board: str,
-        title: str,
-        body: str,
-        comments: str,
-    ) -> str:
-        return f"""<TEI.2>
+def create_tei_template(
+    author: str,
+    id: str,
+    year: str,
+    board: str,
+    title: str,
+    body: str,
+    comments: str,
+) -> str:
+    return f"""<TEI.2>
     <teiHeader>
         <metadata name="author">{author}</metadata>
         <metadata name="post_id">{id}</metadata>
@@ -49,8 +47,21 @@ class TeiConverter:
     </text>
 </TEI.2>"""
 
+
+# --------------------------------------------------------------------
+# public interface
+
+
+@dataclass
+class TeiConverter:
+    """
+    The TeiConverter object converts the post data to tei tags.
+    """
+
+    post_data: Dict[str, Union[str, int]]
+
     async def create_multiple_tei_tags(self):
-        filtered_body = MandarinExtractor(self.post_data["post_body"]).extract()
+        filtered_body = extract_mandarin(self.post_data["post_body"])
 
         return await asyncio.gather(
             create_tei_tags(await segment_text(self.post_data["post_title"]), "title"),
@@ -65,7 +76,7 @@ class TeiConverter:
         year, month, day = create_datetime(self.post_data["post_time"])
         title, body, comments = asyncio.run(self.create_multiple_tei_tags())
 
-        return self.create_tei_template(
+        return create_tei_template(
             author=post_author,
             id=post_id,
             year=year,
