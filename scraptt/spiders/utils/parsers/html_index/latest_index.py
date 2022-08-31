@@ -29,9 +29,6 @@ class LatestIndexParser(Parser):
         latest_index = self.get_latest_index(prev_url)
         board = self.get_board(response.url)
 
-        print("board", board)
-        print("iindex", latest_index)
-
         for index in range(1, latest_index + 1):
             url = f"https://www.ptt.cc/bbs/{board}/index{index}.html"
             self.logger.info(f"index link: {url}")
