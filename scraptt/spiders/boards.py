@@ -6,7 +6,7 @@ from scrapy.http.response.html import HtmlResponse
 class BoardsSpider(Spider):
     """
     The BoardsSpider object defines the behaviour for crawling all the boards from ptt.
-    """ 
+    """
 
     name = "ptt_boards"
     allowed_domains = ["ptt.cc"]
@@ -19,12 +19,10 @@ class BoardsSpider(Spider):
 
             if href.endswith(flag):
                 board = href.replace(flag, "").split("/")[-1]
-                if board == 'ALLPOST':
-                    return 
-                
+                if board == "ALLPOST":
+                    return
+
                 yield BoardItem(name=board)
-                return 
-            
+                return
+
             yield Request(href, self.parse)
-
-
