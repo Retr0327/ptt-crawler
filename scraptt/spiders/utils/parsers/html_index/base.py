@@ -5,7 +5,8 @@ from scrapy.http.response.html import HtmlResponse
 
 class Parser(ABC):
     """
-    The Parser object processes the response and returns scraped data or more URLs to follow.
+    The Parser object defines the behaviour for processing the response and
+    returning scraped data or more URLs to follow.
     """
 
     @abstractmethod
