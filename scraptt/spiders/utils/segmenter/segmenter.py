@@ -20,7 +20,6 @@ async def segment_multiple_comments(data):
 
 async def segment_text(data: List[Union[str, Dict[str, str]]]):
     """The segment_text function segments the text.
-
     Args:
         data (list): the post-related data (i.e title, body or comments).
     Returns:
