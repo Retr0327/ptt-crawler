@@ -20,7 +20,6 @@ async def create_meta_data(response: HtmlResponse):
 
 def get_meta_data(response: HtmlResponse) -> Dict[str, str]:
     """The get_meta_data function gets the meta data of a post.
-
     Args:
         response (HtmlResponse): the scrapy response.
     Returns:
@@ -37,7 +36,6 @@ def get_meta_data(response: HtmlResponse) -> Dict[str, str]:
 
 def get_post_info(url: str) -> List[Union[str, datetime]]:
     """The get_post_info function gets the info of a post from `url`.
-
     Args:
         url (str): the url of a post
     Returns:
