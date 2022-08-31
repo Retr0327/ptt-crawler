@@ -1,15 +1,14 @@
 import asyncio
 from pathlib import Path
 from .base import BasePostSpider
-from ..configs import make_ckip_drivers
-from .utils.post_data import get_post_data
+from .utils.io import write_files
+from ..configs import download_ckip_drivers
 from .utils.tei_converter import TeiConverter
-from .utils.parsers.posts import get_post_info
 from scrapy.http.response.html import HtmlResponse
-from .utils.file_writer import write_multiple_files
+from .utils.parsers.posts import get_post_data, get_post_info
 
 # create ckip drivers
-make_ckip_drivers()
+download_ckip_drivers()
 
 
 class PostSegmentationSpider(BasePostSpider):
@@ -19,10 +18,6 @@ class PostSegmentationSpider(BasePostSpider):
     """
 
     name = "ptt_post_segmentation"
-
-    def __init__(self, **kwargs) -> None:
-        super().__init__(**kwargs)
-        self.data_dir = kwargs.pop("data_dir", None).rstrip("/")
 
     def parse_post(self, response: HtmlResponse):
         post_data = get_post_data(response)
@@ -42,6 +37,4 @@ class PostSegmentationSpider(BasePostSpider):
 
         file_path = f"{dir_path}/{string_date}_{post_id}"
 
-        asyncio.run(
-            write_multiple_files(file_path, response.body, post_data, tei_content)
-        )
+        asyncio.run(write_files(file_path, response.body, post_data, tei_content))
