@@ -9,9 +9,9 @@ ckip_dir = pkg_path / "models"
 ckip_path = ckip_dir / "ckip_drivers.pickle"
 
 
-def make_ckip_drivers() -> None:
-    """The make_ckip_drivers function caches the ckip drivers into a pickle file if
-    the `ckip_drivers.pickle` does not exist.
+def download_ckip_drivers() -> None:
+    """The download_ckip_drivers function downloads the ckip drivers, and saves
+    them to a pickle file if the `ckip_drivers.pickle` does not exist.
     """
 
     NLP_MODEL = "bert-base"
