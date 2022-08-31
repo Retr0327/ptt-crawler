@@ -14,6 +14,8 @@ class IndexParser(Parser):
     title_tags: List[Selector]
 
     def parse(self, callback: Callable):
-        for title_tag in list(self.title_tags.items()):
+        tag_lists = list(self.title_tags.items())
+
+        for title_tag in tag_lists:
             url = title_tag.attr("href")
             yield Request(url, cookies=COOKIES, callback=callback)
