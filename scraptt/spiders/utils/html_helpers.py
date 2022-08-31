@@ -5,7 +5,6 @@ from scrapy.http.response.html import HtmlResponse
 
 def get_title_tags(response: HtmlResponse) -> List[Selector]:
     """The get_title_tags function gets the title tags DOM.
-
     Args:
         response (HtmlResponse): the scrapy HtmlResponse.
     Returns:
