@@ -12,7 +12,8 @@ from scrapy.http.response.html import HtmlResponse
 @dataclass
 class YearBackwardIndexParser(Parser):
     """
-    The YearBackwardIndexParser object parses the index.html files from a year in the past to the current one.
+    The YearBackwardIndexParser object parses the index.html files from a year in the
+    past to the current one.
     """
 
     since: str
